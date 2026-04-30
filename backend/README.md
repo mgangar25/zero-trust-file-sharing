@@ -46,6 +46,7 @@ JWT_SECRET_KEY=use-a-long-random-secret
 JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 FRONTEND_URL=http://localhost:5173
+FRONTEND_ORIGIN=your-deployed-frontend-origin
 R2_ACCOUNT_ID=your-cloudflare-account-id
 R2_ACCESS_KEY_ID=your-r2-access-key-id
 R2_SECRET_ACCESS_KEY=your-r2-secret-access-key
@@ -274,12 +275,29 @@ real Supabase or Cloudflare R2 credentials.
 pytest
 ```
 
-## Planned Features
+## Render Deployment
+
+- Root Directory: `backend`
+- Build Command: `pip install -r requirements.txt`
+- Start Command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+
+Set these environment variables in Render without committing their values:
+
+- `DATABASE_URL`
+- `JWT_SECRET_KEY`
+- `R2_ACCOUNT_ID`
+- `R2_ACCESS_KEY_ID`
+- `R2_SECRET_ACCESS_KEY`
+- `R2_BUCKET_NAME`
+- `R2_ENDPOINT_URL`
+- `MASTER_ENCRYPTION_KEY`
+- `FRONTEND_ORIGIN`
+
+`FRONTEND_ORIGIN` should be the deployed Vercel origin once it exists. Local
+development still allows `http://localhost:5173` and `http://localhost:3000`.
+
+## Future Improvements
 
 - Database migrations with Alembic
-- Access audit logging
 - Rate limiting for login and share-link routes
-- Pytest test suite
-- Vercel frontend deployment
-- Render backend deployment
 - GitHub Actions CI

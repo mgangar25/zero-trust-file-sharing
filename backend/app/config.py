@@ -121,8 +121,14 @@ class Settings:
         "60",
     )
 
-    # The frontend URL is used by CORS so the browser knows this frontend is
-    # allowed to call the API.
+    # FRONTEND_ORIGIN is the deployed frontend URL, such as the Vercel app URL.
+    # It is optional during local development because main.py always allows the
+    # local Next.js dev origins.
+    FRONTEND_ORIGIN: str = _get_optional_env("FRONTEND_ORIGIN", "")
+
+    # FRONTEND_URL was used earlier in the project. Keeping it as an optional
+    # fallback avoids breaking existing local .env files while new deployments
+    # can use the clearer FRONTEND_ORIGIN name.
     FRONTEND_URL: str = _get_optional_env("FRONTEND_URL", "http://localhost:5173")
 
     # MASTER_ENCRYPTION_KEY protects the per-file encryption keys during local

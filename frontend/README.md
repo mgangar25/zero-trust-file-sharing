@@ -51,3 +51,15 @@ npm run lint
 npm run build
 npm run dev
 ```
+
+## Vercel Deployment
+
+- Root Directory: `frontend`
+- Build Command: `npm run build`
+- Output: handled automatically by Next.js/Vercel
+
+Set this Vercel environment variable after the Render backend URL exists:
+
+```bash
+NEXT_PUBLIC_API_URL=<Render backend URL>
+```

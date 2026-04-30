@@ -9,8 +9,8 @@ passlib[bcrypt]
 bcrypt==4.0.1
 pydantic[email]
 python-multipart
-
-# Planned for later project steps:
 boto3
+
+# Test-only dependencies are kept here so Render and local setup use one file.
 pytest
 httpx

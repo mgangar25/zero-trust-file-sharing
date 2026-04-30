@@ -108,13 +108,49 @@ npm run dev
 Open the app at `http://localhost:5173` and the API docs at
 `http://localhost:8000/docs`.
 
+## Deployment
+
+Backend on Render:
+
+- Root Directory: `backend`
+- Build Command: `pip install -r requirements.txt`
+- Start Command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+
+Render environment variable names:
+
+- `DATABASE_URL`
+- `JWT_SECRET_KEY`
+- `R2_ACCOUNT_ID`
+- `R2_ACCESS_KEY_ID`
+- `R2_SECRET_ACCESS_KEY`
+- `R2_BUCKET_NAME`
+- `R2_ENDPOINT_URL`
+- `MASTER_ENCRYPTION_KEY`
+- `FRONTEND_ORIGIN`
+
+`FRONTEND_ORIGIN` should be the final deployed Vercel origin once the frontend
+URL exists. Local development still allows `http://localhost:5173` and
+`http://localhost:3000`.
+
+Frontend on Vercel:
+
+- Root Directory: `frontend`
+- Build Command: `npm run build`
+- Output: handled automatically by Next.js/Vercel
+
+Vercel environment variable:
+
+```bash
+NEXT_PUBLIC_API_URL=<Render backend URL>
+```
+
 ## Environment Variables
 
 Backend variables belong in `backend/.env` and should never be committed:
 
 - `DATABASE_URL`
 - `JWT_SECRET_KEY`
-- `FRONTEND_URL`
+- `FRONTEND_ORIGIN`
 - `R2_ACCOUNT_ID`
 - `R2_ACCESS_KEY_ID`
 - `R2_SECRET_ACCESS_KEY`

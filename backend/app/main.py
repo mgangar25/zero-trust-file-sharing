@@ -19,6 +19,33 @@ from app.database import create_database_tables, get_db
 from app.routes import audit_routes, auth_routes, file_routes, share_routes
 
 
+def build_allowed_cors_origins() -> list[str]:
+    """
+    Return the browser origins allowed to call this API.
+
+    Local development commonly uses Next.js on port 5173 in this project, while
+    port 3000 is Next.js's default. In production, Render should receive the
+    deployed Vercel origin through FRONTEND_ORIGIN.
+    """
+    local_dev_origins = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+    ]
+    configured_origins = [
+        settings.FRONTEND_ORIGIN,
+        # Backward-compatible support for older local .env files.
+        settings.FRONTEND_URL,
+    ]
+
+    allowed_origins: list[str] = []
+    for origin in [*local_dev_origins, *configured_origins]:
+        cleaned_origin = origin.strip().rstrip("/") if origin else ""
+        if cleaned_origin and cleaned_origin not in allowed_origins:
+            allowed_origins.append(cleaned_origin)
+
+    return allowed_origins
+
+
 # FastAPI creates the web application object.
 # It handles incoming HTTP requests, validates data with Pydantic, and sends
 # JSON responses back to the client.
@@ -33,11 +60,13 @@ app = FastAPI(
 # Browsers block frontend apps from calling a backend on a different origin
 # unless the backend explicitly allows it.
 #
-# During development, the React app will likely run on http://localhost:5173
-# while this API runs on http://localhost:8000, so we allow that frontend URL.
+# During development, the frontend runs on localhost. In production, set
+# FRONTEND_ORIGIN to the deployed Vercel URL. We avoid "*" here because this API
+# uses Authorization headers and should only accept browser calls from known
+# frontend origins.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_URL],
+    allow_origins=build_allowed_cors_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
