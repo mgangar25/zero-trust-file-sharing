@@ -1,0 +1,20 @@
+# Secrets and local environment files.
+backend/.env
+.env
+**/.env
+
+# Python virtual environments and generated files.
+backend/.venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+backend/test_zero_trust.db
+
+# macOS/editor noise.
+.DS_Store
+
+# Frontend build/dependency folders for future React work.
+node_modules/
+dist/
+build/
